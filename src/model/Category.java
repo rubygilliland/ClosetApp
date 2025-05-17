@@ -1,0 +1,18 @@
+package model;
+
+public enum Category {
+SLEEP,
+BLOUSE,
+TANK,
+TEE,
+SWEATSHIRT,
+SWEATER,
+JEANS,
+SKIRT,
+SHORTS,
+PANTS,
+DRESS,
+JUMPER,
+ACCESSORY,
+SHOES
+}
