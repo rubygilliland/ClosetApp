@@ -3,34 +3,46 @@ package model;
 import java.util.Objects;
 import java.util.UUID;
 
+import javax.swing.ImageIcon;
+
 /**
  * Immutable class representing a clothing item.
  */
 public final class ClothingItem {
+    private final String imagePath;
+    private final ImageIcon image;
     private final String id;
     private final Season season;
     private final Category category;
     private final Color color;
     private final String brand;
 
-    /**
+    /*
      * Constructs a new ClothingItem with the specified attributes.
      */
-    public ClothingItem(Season season, Category category, Color color, String brand) {
-        this(UUID.randomUUID().toString(), season, category, color, brand);
+    public ClothingItem(String imagePath, Season season, Category category, Color color, String brand) {
+        this.imagePath = Objects.requireNonNull(imagePath);
+        this.image = new ImageIcon(imagePath);
+        this.id = UUID.randomUUID().toString();
+        this.season = Objects.requireNonNull(season);
+        this.category = Objects.requireNonNull(category);
+        this.color = Objects.requireNonNull(color);
+        this.brand = Objects.requireNonNull(brand);
     }
 
-    /**
+    /*
      * Copy constructor.
      */
     public ClothingItem(ClothingItem other) {
-        this(other.id, other.season, other.category, other.color, other.brand);
+        this(other.imagePath, other.id, other.season, other.category, other.color, other.brand);
     }
 
-    /**
-     * Full constructor with ID.
+    /*
+     * Full constructor with ID (used for immutability-based edits).
      */
-    private ClothingItem(String id, Season season, Category category, Color color, String brand) {
+    private ClothingItem(String imagePath, String id, Season season, Category category, Color color, String brand) {
+        this.imagePath = Objects.requireNonNull(imagePath);
+        this.image = new ImageIcon(imagePath);
         this.id = id;
         this.season = Objects.requireNonNull(season);
         this.category = Objects.requireNonNull(category);
@@ -58,25 +70,47 @@ public final class ClothingItem {
         return brand;
     }
 
-    /**
+    public ImageIcon getImageIcon() {
+        return image;
+    }
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    /*
      * Returns a new ClothingItem with a modified category.
      */
     public ClothingItem withCategory(Category newCategory) {
-        return new ClothingItem(this.id, season, newCategory, color, brand);
+        return new ClothingItem(imagePath, id, season, newCategory, color, brand);
     }
 
-    /**
+    /*
      * Returns a new ClothingItem with a modified color.
      */
     public ClothingItem withColor(Color newColor) {
-        return new ClothingItem(this.id, season, category, newColor, brand);
+        return new ClothingItem(imagePath, id, season, category, newColor, brand);
     }
 
-    /**
+    /*
      * Returns a new ClothingItem with a modified season.
      */
     public ClothingItem withSeason(Season newSeason) {
-        return new ClothingItem(this.id, newSeason, category, color, brand);
+        return new ClothingItem(imagePath, id, newSeason, category, color, brand);
+    }
+    
+    /*
+     * Returns a new ClothingItem with a modified image path.
+     */
+    public ClothingItem withImagePath(String newImagePath) {
+        return new ClothingItem(newImagePath, id, season, category, color, brand);
+    }
+
+    /*
+     * Returns a new ClothingItem with a modified brand.
+     */
+    public ClothingItem withBrand(String newBrand) {
+    	return new ClothingItem(imagePath, id, season, category, color, newBrand);
     }
 
     @Override
@@ -86,9 +120,7 @@ public final class ClothingItem {
 
     @Override
     public int hashCode() {
-    	
-    	// hash only on ID
-        return Objects.hash(id); 
+        return Objects.hash(id); // hash only on ID
     }
 
     @Override
@@ -99,3 +131,4 @@ public final class ClothingItem {
         return id.equals(other.id);
     }
 }
+
